@@ -1,0 +1,83 @@
+import { WorkflowItem, ConnectionConfig } from '../types';
+
+export const INITIAL_WORKFLOWS: WorkflowItem[] = [
+  {
+    id: 'wf-pitch-deck',
+    name: 'Autonomous Sales & Investor Pitch Deck',
+    description: 'Deconstructs your product thesis, researches target market data, drafts compelling slide copy, generates graphics, and formats a 10-slide master deck.',
+    category: 'Business & Sales',
+    stepsCount: 4,
+    executionTime: '~12 seconds',
+    agents: ['Research Agent', 'Writing Agent', 'Visual Agent', 'Presentation Agent'],
+    popularTrigger: 'Prompt / Market Brief',
+  },
+  {
+    id: 'wf-financial-quarterly',
+    name: 'Quarterly Financial Health & Forecast Audit',
+    description: 'Ingests transaction ledgers or budget estimates, performs variance analysis against previous quarter, and produces CFO-ready executive report with graphs.',
+    category: 'Finance & Strategy',
+    stepsCount: 3,
+    executionTime: '~8 seconds',
+    agents: ['Financial Analyst Agent', 'Research Agent', 'Writing Agent'],
+    popularTrigger: 'Monthly Close / Ledger Upload',
+  },
+  {
+    id: 'wf-product-launch',
+    name: 'Omni-Channel Product Launch Engine',
+    description: 'Generates complete product launch package: landing page copy, email sequences, social posts, press release, and competitive positioning matrix.',
+    category: 'Marketing & Growth',
+    stepsCount: 5,
+    executionTime: '~15 seconds',
+    agents: ['Writing Agent', 'Visual Agent', 'Research Agent', 'Presentation Agent'],
+    popularTrigger: 'New Feature Announcement',
+  },
+  {
+    id: 'wf-fullstack-prototype',
+    name: 'Full-Stack Rapid Prototype Pipeline',
+    description: 'Drafts architectural PRD, creates relational database schema, builds responsive React UI with Tailwind, and writes end-to-end integration tests.',
+    category: 'Engineering & Dev',
+    stepsCount: 4,
+    executionTime: '~18 seconds',
+    agents: ['Research Agent', 'Code Synthesizer Agent', 'Visual Agent'],
+    popularTrigger: 'GitHub Issue / Specification',
+  },
+];
+
+export const INITIAL_CONNECTIONS: ConnectionConfig[] = [
+  {
+    id: 'conn-gemini',
+    provider: 'Google Gemini',
+    name: 'Gemini 2.5 Flash & Pro Engine',
+    type: 'gemini',
+    status: 'connected',
+    apiKeyPreview: 'AIzaSy... (Server-side active)',
+    description: 'Primary high-speed multi-modal reasoning engine powering autonomous orchestration and in-app tool execution.',
+  },
+  {
+    id: 'conn-mcp',
+    provider: 'Model Context Protocol (MCP)',
+    name: 'OmniAI MCP Local & Remote Bridge',
+    type: 'mcp',
+    status: 'connected',
+    endpoint: 'mcp://localhost:8080/v1',
+    description: 'Standardized context protocol connecting local files, SQL databases, GitHub repositories, and developer tools.',
+  },
+  {
+    id: 'conn-claude',
+    provider: 'Anthropic Claude',
+    name: 'Claude 3.7 Sonnet API',
+    type: 'anthropic',
+    status: 'connected',
+    apiKeyPreview: 'sk-ant-api03-9d8f...',
+    description: 'Advanced reasoning and extended thinking engine for complex architecture and analytical drafting.',
+  },
+  {
+    id: 'conn-openai',
+    provider: 'OpenAI API',
+    name: 'GPT-4.5 / o3 Reasoning Bridge',
+    type: 'openai',
+    status: 'connected',
+    apiKeyPreview: 'sk-proj-4f81a...',
+    description: 'Connected for specialized GPT integrations and external AI tool orchestrations.',
+  },
+];

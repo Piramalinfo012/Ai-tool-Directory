@@ -1,0 +1,7 @@
+{
+  "name": "OmniAI Platform",
+  "description": "Unified AI command center with multi-agent task execution and 5 curated tool pillars (Business & Productivity, Branding & Marketing, Investment & Finance, Learning & Career, Fitness & Travel).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
