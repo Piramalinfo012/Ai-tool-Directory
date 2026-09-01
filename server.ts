@@ -268,6 +268,23 @@ app.post("/api/gemini/chat", async (req, res) => {
   }
 });
 
+// API: Real-time Gemini & Server Proxy Status
+app.get("/api/gemini/status", (req, res) => {
+  const hasKey = Boolean(process.env.GEMINI_API_KEY);
+  res.json({
+    status: "ok",
+    proxy: "active",
+    geminiConfigured: hasKey,
+    modelEngine: hasKey ? "Gemini 2.5 / 3.7 Flash & Pro" : "OmniAI Intelligent Proxy (Standby)",
+    uptime: Math.floor(process.uptime()),
+    timestamp: new Date().toISOString(),
+  });
+});
+
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", uptime: process.uptime() });
+});
+
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({

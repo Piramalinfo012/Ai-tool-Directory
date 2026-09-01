@@ -136,11 +136,11 @@ export const CategoryVisualization: React.FC = () => {
           </div>
           <div className="text-xs text-slate-400 font-medium flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-            <span>Click any pillar card to view and launch tools</span>
+            <span>Click any pillar card to open its full page</span>
           </div>
         </div>
 
-        {/* 5 Core Sector Cards with Stylish Animations & Glowing Accents */}
+        {/* 5 Core Sector Cards with Direct Navigation to Full Page */}
         <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
           {categories.map((cat, index) => {
             const isSelected = activeCategoryId === cat.id;
@@ -151,17 +151,19 @@ export const CategoryVisualization: React.FC = () => {
               <motion.button
                 key={cat.id}
                 id={`wheel-sector-${cat.slug}`}
-                onClick={() => setActiveCategoryId(cat.id)}
+                onClick={() => navigateToCategory(cat.slug)}
+                onMouseEnter={() => setActiveCategoryId(cat.id)}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
-                className={`group relative flex flex-col justify-between rounded-2xl border p-4 text-left transition-all duration-300 overflow-hidden ${
+                className={`group relative flex flex-col justify-between rounded-2xl border p-4 text-left transition-all duration-300 overflow-hidden cursor-pointer ${
                   isSelected
                     ? `border-2 ${theme.activeBorder} ${theme.activeGlow} bg-gradient-to-b ${theme.gradient} bg-slate-900/90`
                     : 'border-slate-800/80 bg-slate-900/40 text-slate-400 hover:border-slate-700 hover:bg-slate-900/80 hover:text-slate-200 shadow-md'
                 }`}
+                title={`Open full page for ${cat.name}`}
               >
                 {/* Active Sector Top Accent Light Bar */}
                 {isSelected && (
@@ -217,17 +219,17 @@ export const CategoryVisualization: React.FC = () => {
                 <div className="relative z-10 mt-4 flex items-center justify-between pt-2.5 border-t border-slate-800/60 text-[11px]">
                   <span
                     className={`font-semibold transition-colors flex items-center gap-1 ${
-                      isSelected ? theme.text : 'text-slate-500 group-hover:text-slate-400'
+                      isSelected ? theme.text : 'text-slate-400 group-hover:text-slate-200'
                     }`}
                   >
                     {isSelected && <span className="h-1.5 w-1.5 rounded-full bg-current animate-pulse" />}
-                    {isSelected ? 'Active Sector' : 'Explore'}
+                    View Full Page
                   </span>
                   <ChevronRight
                     className={`h-3.5 w-3.5 transition-transform duration-200 ${
                       isSelected
                         ? `${theme.text} translate-x-1`
-                        : 'text-slate-600 group-hover:text-slate-400 group-hover:translate-x-0.5'
+                        : 'text-slate-500 group-hover:text-slate-200 group-hover:translate-x-1'
                     }`}
                   />
                 </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { useOmniAI } from '../../context/OmniAIContext';
+import { ConnectionStatusPulse } from './ConnectionStatusPulse';
 import {
   Sparkles,
   Wrench,
@@ -200,6 +201,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onOpenAdmin }) => {
 
         {/* Right Action Tools & Profile / Admin */}
         <div className="flex items-center space-x-2 sm:space-x-3">
+          {/* Real-time Gemini API / Server Proxy Connection Status */}
+          <ConnectionStatusPulse />
+
           {activeTab === 'tools_directory' && (
             <button
               onClick={() => setDirectoryView(directoryView === 'my_tools' ? 'home' : 'my_tools')}

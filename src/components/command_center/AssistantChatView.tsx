@@ -17,7 +17,7 @@ import {
 import { ChatMessage } from '../../types';
 
 export const AssistantChatView: React.FC = () => {
-  const { navigateToCommandCenterWithPrompt, setActiveTab, tools } = useOmniAI();
+  const { navigateToCommandCenterWithPrompt, setActiveTab, tools, setIsAiBusy } = useOmniAI();
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'm-1',
@@ -60,6 +60,7 @@ Give me any task below, and I will complete it right here!`,
     setMessages(newMessages);
     setInput('');
     setIsLoading(true);
+    setIsAiBusy(true);
 
     try {
       const response = await fetch('/api/gemini/chat', {
@@ -91,6 +92,7 @@ Give me any task below, and I will complete it right here!`,
       ]);
     } finally {
       setIsLoading(false);
+      setIsAiBusy(false);
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import {
   AppTab,
   CommandCenterSection,
@@ -7,6 +7,8 @@ import {
   RecentlyUsedTool,
   OrchestrationResult,
   AIAgent,
+  ConnectionState,
+  ProxyConnectionInfo,
 } from '../types';
 import { TOOL_CATEGORIES } from '../data/categoriesData';
 import { INITIAL_AI_TOOLS } from '../data/toolsData';
@@ -48,6 +50,12 @@ interface OmniAIContextType {
   navigateToCommandCenterWithPrompt: (prompt: string) => void;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
+  // Real-time Connection Status & Gemini Proxy
+  connectionState: ConnectionState;
+  isAiBusy: boolean;
+  setIsAiBusy: (busy: boolean) => void;
+  proxyInfo: ProxyConnectionInfo | null;
+  checkConnection: () => Promise<void>;
 }
 
 const OmniAIContext = createContext<OmniAIContextType | undefined>(undefined);
@@ -108,6 +116,83 @@ export const OmniAIProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [agents] = useState<AIAgent[]>(INITIAL_AGENTS);
   const [orchestrationHistory, setOrchestrationHistory] = useState<OrchestrationResult[]>([]);
   const [adminMode, setAdminMode] = useState<boolean>(false);
+
+  // Real-time Connection Status State
+  const [isAiBusy, setIsAiBusy] = useState<boolean>(false);
+  const [proxyInfo, setProxyInfo] = useState<ProxyConnectionInfo | null>(null);
+  const [connectionState, setConnectionState] = useState<ConnectionState>('idle');
+
+  const checkConnection = useCallback(async () => {
+    const start = performance.now();
+    try {
+      const res = await fetch('/api/gemini/status', {
+        method: 'GET',
+        headers: { 'Cache-Control': 'no-cache' },
+      });
+      const latency = Math.round(performance.now() - start);
+
+      if (res.ok) {
+        const data = await res.json();
+        setProxyInfo({
+          status: 'ok',
+          proxy: data.proxy || 'active',
+          geminiConfigured: Boolean(data.geminiConfigured),
+          modelEngine: data.modelEngine || 'Gemini 2.5 / 3.7 Flash & Pro',
+          latencyMs: latency,
+          uptime: data.uptime,
+          lastChecked: new Date().toISOString(),
+        });
+        setConnectionState((prev) => (isAiBusy ? 'busy' : 'active'));
+      } else {
+        setProxyInfo((prev) =>
+          prev
+            ? { ...prev, status: 'degraded', latencyMs: latency, lastChecked: new Date().toISOString() }
+            : {
+                status: 'degraded',
+                proxy: 'degraded',
+                geminiConfigured: false,
+                modelEngine: 'Intelligent Standby Proxy',
+                latencyMs: latency,
+                lastChecked: new Date().toISOString(),
+              }
+        );
+        setConnectionState('idle');
+      }
+    } catch (err) {
+      console.warn('Proxy health check error:', err);
+      setConnectionState('offline');
+      setProxyInfo({
+        status: 'error',
+        proxy: 'offline',
+        geminiConfigured: false,
+        modelEngine: 'Offline',
+        latencyMs: -1,
+        lastChecked: new Date().toISOString(),
+      });
+    }
+  }, [isAiBusy]);
+
+  // Initial and periodic health ping (every 30 seconds)
+  useEffect(() => {
+    checkConnection();
+    const interval = setInterval(() => {
+      checkConnection();
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [checkConnection]);
+
+  // Update connection state when isAiBusy toggles
+  useEffect(() => {
+    if (isAiBusy) {
+      setConnectionState('busy');
+    } else if (proxyInfo?.status === 'ok') {
+      setConnectionState('active');
+    } else if (proxyInfo?.status === 'error') {
+      setConnectionState('offline');
+    } else {
+      setConnectionState('idle');
+    }
+  }, [isAiBusy, proxyInfo?.status]);
 
   // Sync tools to localStorage
   useEffect(() => {
@@ -264,6 +349,11 @@ export const OmniAIProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         navigateToCommandCenterWithPrompt,
         searchTerm,
         setSearchTerm,
+        connectionState,
+        isAiBusy,
+        setIsAiBusy,
+        proxyInfo,
+        checkConnection,
       }}
     >
       {children}

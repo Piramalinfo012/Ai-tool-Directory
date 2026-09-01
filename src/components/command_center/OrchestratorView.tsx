@@ -73,6 +73,7 @@ export const OrchestratorView: React.FC = () => {
     tools,
     addOrchestrationResult,
     orchestrationHistory,
+    setIsAiBusy,
   } = useOmniAI();
 
   const [inputPrompt, setInputPrompt] = useState<string>('');
@@ -116,6 +117,7 @@ export const OrchestratorView: React.FC = () => {
     if (!text.trim() || isOrchestrating) return;
 
     setIsOrchestrating(true);
+    setIsAiBusy(true);
     setActiveStepIndex(0);
     setOrchestrationData(null);
 
@@ -166,6 +168,7 @@ export const OrchestratorView: React.FC = () => {
       console.error('Orchestration error:', error);
     } finally {
       setIsOrchestrating(false);
+      setIsAiBusy(false);
     }
   };
 

@@ -140,3 +140,16 @@ export interface ChatMessage {
   timestamp: string;
   agent?: string;
 }
+
+export type ConnectionState = 'active' | 'idle' | 'busy' | 'offline';
+
+export interface ProxyConnectionInfo {
+  status: 'ok' | 'degraded' | 'error';
+  proxy: string;
+  geminiConfigured: boolean;
+  modelEngine: string;
+  latencyMs: number;
+  uptime?: number;
+  lastChecked: string;
+}
+
