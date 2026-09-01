@@ -68,9 +68,12 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onOpenAdmin }) => {
         <div className="flex items-center space-x-2">
           <div className="tab-navigation-container relative flex items-center rounded-xl border border-slate-800/90 bg-slate-900/90 p-1 shadow-inner backdrop-blur-md">
             {/* Primary AI Tools Directory Tab (Default) */}
-            <button
+            <motion.button
               id="tab-tools-directory"
               onClick={() => setActiveTab('tools_directory')}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
               className={`relative z-10 flex items-center space-x-2 rounded-lg px-3.5 py-1.5 text-xs sm:text-sm font-semibold transition-colors duration-200 ${
                 activeTab === 'tools_directory'
                   ? 'text-white'
@@ -82,12 +85,39 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onOpenAdmin }) => {
                   <motion.div
                     layoutId="active-tab-indicator"
                     className="absolute inset-0 rounded-lg bg-gradient-to-r from-emerald-600/90 via-emerald-600 to-teal-700/90 shadow-md shadow-emerald-500/25 ring-1 ring-emerald-400/40"
-                    transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 420,
+                      damping: 34,
+                      mass: 0.8,
+                    }}
                   />
                   <motion.div
                     layoutId="active-tab-glow-underline"
-                    className="absolute -bottom-1.5 left-2 right-2 h-[2px] rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.9)]"
-                    transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                    className="absolute -bottom-1 left-2 right-2 h-[2px] rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400"
+                    style={{
+                      boxShadow: '0 0 12px 2px rgba(52, 211, 153, 0.85), 0 4px 20px 4px rgba(20, 184, 166, 0.5)',
+                    }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 420,
+                      damping: 34,
+                      mass: 0.8,
+                    }}
+                  />
+                  <motion.div
+                    layoutId="active-tab-radial-glow"
+                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-4 w-24 rounded-full pointer-events-none"
+                    style={{
+                      background: 'radial-gradient(ellipse at center, rgba(52, 211, 153, 0.6) 0%, rgba(20, 184, 166, 0.25) 50%, transparent 80%)',
+                      boxShadow: '0 4px 18px 6px rgba(52, 211, 153, 0.35), 0 1px 6px rgba(20, 184, 166, 0.5)',
+                    }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 420,
+                      damping: 34,
+                      mass: 0.8,
+                    }}
                   />
                 </>
               )}
@@ -98,12 +128,15 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onOpenAdmin }) => {
                   {categories.length} Sectors
                 </span>
               </span>
-            </button>
+            </motion.button>
 
             {/* Eye Icon for OmniAI Command Center */}
-            <button
+            <motion.button
               id="tab-command-center"
               onClick={() => setActiveTab(activeTab === 'command_center' ? 'tools_directory' : 'command_center')}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
               className={`relative z-10 flex items-center justify-center rounded-lg p-2 text-xs sm:text-sm font-semibold transition-colors duration-200 ${
                 activeTab === 'command_center'
                   ? 'text-white'
@@ -117,24 +150,51 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onOpenAdmin }) => {
                   <motion.div
                     layoutId="active-tab-indicator"
                     className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-600 via-indigo-600 to-indigo-700 shadow-md shadow-indigo-600/35 ring-1 ring-indigo-400/50"
-                    transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 420,
+                      damping: 34,
+                      mass: 0.8,
+                    }}
                   />
                   <motion.div
                     layoutId="active-tab-glow-underline"
-                    className="absolute -bottom-1.5 left-1 right-1 h-[2px] rounded-full bg-gradient-to-r from-indigo-400 via-cyan-300 to-indigo-400 shadow-[0_0_12px_rgba(99,102,241,0.9)]"
-                    transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                    className="absolute -bottom-1 left-1 right-1 h-[2px] rounded-full bg-gradient-to-r from-indigo-400 via-cyan-300 to-indigo-400"
+                    style={{
+                      boxShadow: '0 0 12px 2px rgba(99, 102, 241, 0.9), 0 4px 20px 4px rgba(6, 182, 212, 0.55)',
+                    }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 420,
+                      damping: 34,
+                      mass: 0.8,
+                    }}
+                  />
+                  <motion.div
+                    layoutId="active-tab-radial-glow"
+                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-4 w-16 rounded-full pointer-events-none"
+                    style={{
+                      background: 'radial-gradient(ellipse at center, rgba(99, 102, 241, 0.7) 0%, rgba(6, 182, 212, 0.3) 50%, transparent 80%)',
+                      boxShadow: '0 4px 18px 6px rgba(99, 102, 241, 0.4), 0 1px 6px rgba(6, 182, 212, 0.5)',
+                    }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 420,
+                      damping: 34,
+                      mass: 0.8,
+                    }}
                   />
                 </>
               )}
               <span className="relative z-20 flex items-center justify-center">
                 <Eye
-                  className={`h-4 w-4 transition-transform duration-300 ${
+                  className={`h-4 w-4 transition-transform duration-200 ${
                     activeTab === 'command_center' ? 'text-cyan-200 scale-110' : 'text-slate-400 hover:text-white'
                   }`}
                 />
               </span>
               <span className="sr-only">Command Center</span>
-            </button>
+            </motion.button>
           </div>
         </div>
 
