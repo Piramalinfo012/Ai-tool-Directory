@@ -53,7 +53,7 @@ interface OmniAIContextType {
 const OmniAIContext = createContext<OmniAIContextType | undefined>(undefined);
 
 export const OmniAIProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [activeTab, setActiveTab] = useState<AppTab>('command_center');
+  const [activeTab, setActiveTab] = useState<AppTab>('tools_directory');
   const [activeSection, setActiveSection] = useState<CommandCenterSection>('orchestrator');
   const [directoryView, setDirectoryView] = useState<'home' | 'category' | 'my_tools'>('home');
   const [selectedCategorySlug, setSelectedCategorySlug] = useState<string | null>(null);

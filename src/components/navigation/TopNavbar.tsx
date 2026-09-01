@@ -11,10 +11,12 @@ import {
   Cpu,
   Workflow,
   PlusCircle,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 
 interface TopNavbarProps {
-  onOpenAdmin: () => void;
+  onOpenAdmin?: () => void;
 }
 
 export const TopNavbar: React.FC<TopNavbarProps> = ({ onOpenAdmin }) => {
@@ -55,49 +57,52 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onOpenAdmin }) => {
             </div>
             <p className="hidden text-[11px] text-slate-400 sm:block">
               {activeTab === 'command_center'
-                ? 'Autonomous Task Orchestration & Agent Workflows'
-                : 'Centralized AI Tools & Model Directory'}
+                ? 'Autonomous Task Orchestration & Multi-Agent Execution'
+                : 'Centralized AI Tools Directory • 5 Core Pillars'}
             </p>
           </div>
         </div>
 
-        {/* REQUIRED TWO-TAB SEGMENTED NAVIGATION */}
-        <div className="flex items-center rounded-xl border border-slate-800 bg-slate-900/90 p-1 shadow-inner">
-          <button
-            id="tab-command-center"
-            onClick={() => setActiveTab('command_center')}
-            className={`relative flex items-center space-x-2 rounded-lg px-4 py-2 text-xs sm:text-sm font-semibold transition-all duration-200 ${
-              activeTab === 'command_center'
-                ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400/40'
-                : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
-            }`}
-          >
-            <Sparkles className={`h-4 w-4 ${activeTab === 'command_center' ? 'text-cyan-300 animate-pulse' : 'text-slate-400'}`} />
-            <span className="hidden sm:inline">OmniAI Command Center</span>
-            <span className="sm:hidden">Command</span>
-            {activeTab === 'command_center' && (
-              <span className="hidden lg:inline-flex rounded-full bg-indigo-400/20 px-1.5 py-0.2 text-[10px] font-bold text-cyan-200">
-                DO IT FOR ME
+        {/* NAVIGATION: AI Tools Directory + Eye Icon for Command Center */}
+        <div className="flex items-center space-x-2">
+          <div className="flex items-center rounded-xl border border-slate-800 bg-slate-900/90 p-1 shadow-inner">
+            {/* Primary AI Tools Directory Tab (Default) */}
+            <button
+              id="tab-tools-directory"
+              onClick={() => setActiveTab('tools_directory')}
+              className={`relative flex items-center space-x-2 rounded-lg px-4 py-2 text-xs sm:text-sm font-semibold transition-all duration-200 ${
+                activeTab === 'tools_directory'
+                  ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-md shadow-emerald-600/30 ring-1 ring-emerald-400/40'
+                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
+              }`}
+            >
+              <Wrench className={`h-4 w-4 ${activeTab === 'tools_directory' ? 'text-emerald-200' : 'text-slate-400'}`} />
+              <span>AI Tools Directory</span>
+              <span className="inline-flex items-center rounded-full bg-slate-800 px-2 py-0.5 text-[11px] font-bold text-slate-300">
+                {categories.length} Sectors
               </span>
-            )}
-          </button>
+            </button>
 
-          <button
-            id="tab-tools-directory"
-            onClick={() => setActiveTab('tools_directory')}
-            className={`relative flex items-center space-x-2 rounded-lg px-4 py-2 text-xs sm:text-sm font-semibold transition-all duration-200 ${
-              activeTab === 'tools_directory'
-                ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-md shadow-emerald-600/30 ring-1 ring-emerald-400/40'
-                : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
-            }`}
-          >
-            <Wrench className={`h-4 w-4 ${activeTab === 'tools_directory' ? 'text-emerald-200' : 'text-slate-400'}`} />
-            <span className="hidden sm:inline">AI Tools Directory</span>
-            <span className="sm:hidden">Directory</span>
-            <span className="inline-flex items-center rounded-full bg-slate-800 px-2 py-0.5 text-[11px] font-bold text-slate-300">
-              {categories.length} Cats
-            </span>
-          </button>
+            {/* Eye Icon for OmniAI Command Center */}
+            <button
+              id="tab-command-center"
+              onClick={() => setActiveTab(activeTab === 'command_center' ? 'tools_directory' : 'command_center')}
+              className={`relative flex items-center justify-center rounded-lg p-2 text-xs sm:text-sm font-semibold transition-all duration-200 ${
+                activeTab === 'command_center'
+                  ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400/40'
+                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
+              }`}
+              title={activeTab === 'command_center' ? 'Close Command Center' : 'Open OmniAI Command Center'}
+              aria-label="Open OmniAI Command Center"
+            >
+              <Eye
+                className={`h-4 w-4 transition-transform ${
+                  activeTab === 'command_center' ? 'text-cyan-300 scale-110' : 'text-slate-400 hover:text-white'
+                }`}
+              />
+              <span className="sr-only">Command Center</span>
+            </button>
+          </div>
         </div>
 
         {/* Right Action Tools & Profile / Admin */}
@@ -121,14 +126,16 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onOpenAdmin }) => {
           )}
 
           {/* Admin Tools Management */}
-          <button
-            onClick={onOpenAdmin}
-            className="flex items-center space-x-1.5 rounded-lg border border-slate-800 bg-slate-900 px-2.5 py-1.5 text-xs font-medium text-slate-300 hover:border-indigo-500/50 hover:bg-indigo-950/40 hover:text-indigo-200 transition"
-            title="Manage AI Tools Directory"
-          >
-            <Shield className="h-3.5 w-3.5 text-indigo-400" />
-            <span className="hidden lg:inline">Admin Registry</span>
-          </button>
+          {onOpenAdmin && (
+            <button
+              onClick={onOpenAdmin}
+              className="flex items-center space-x-1.5 rounded-lg border border-slate-800 bg-slate-900 px-2.5 py-1.5 text-xs font-medium text-slate-300 hover:border-indigo-500/50 hover:bg-indigo-950/40 hover:text-indigo-200 transition"
+              title="Manage AI Tools Directory"
+            >
+              <Shield className="h-3.5 w-3.5 text-indigo-400" />
+              <span className="hidden lg:inline">Admin Registry</span>
+            </button>
+          )}
         </div>
       </div>
     </header>
