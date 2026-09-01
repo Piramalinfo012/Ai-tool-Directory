@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { useOmniAI } from '../../context/OmniAIContext';
 import {
   Sparkles,
@@ -65,21 +66,37 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onOpenAdmin }) => {
 
         {/* NAVIGATION: AI Tools Directory + Eye Icon for Command Center */}
         <div className="flex items-center space-x-2">
-          <div className="flex items-center rounded-xl border border-slate-800 bg-slate-900/90 p-1 shadow-inner">
+          <div className="tab-navigation-container relative flex items-center rounded-xl border border-slate-800/90 bg-slate-900/90 p-1 shadow-inner backdrop-blur-md">
             {/* Primary AI Tools Directory Tab (Default) */}
             <button
               id="tab-tools-directory"
               onClick={() => setActiveTab('tools_directory')}
-              className={`relative flex items-center space-x-2 rounded-lg px-4 py-2 text-xs sm:text-sm font-semibold transition-all duration-200 ${
+              className={`relative z-10 flex items-center space-x-2 rounded-lg px-3.5 py-1.5 text-xs sm:text-sm font-semibold transition-colors duration-200 ${
                 activeTab === 'tools_directory'
-                  ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-md shadow-emerald-600/30 ring-1 ring-emerald-400/40'
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
+                  ? 'text-white'
+                  : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <Wrench className={`h-4 w-4 ${activeTab === 'tools_directory' ? 'text-emerald-200' : 'text-slate-400'}`} />
-              <span>AI Tools Directory</span>
-              <span className="inline-flex items-center rounded-full bg-slate-800 px-2 py-0.5 text-[11px] font-bold text-slate-300">
-                {categories.length} Sectors
+              {activeTab === 'tools_directory' && (
+                <>
+                  <motion.div
+                    layoutId="active-tab-indicator"
+                    className="absolute inset-0 rounded-lg bg-gradient-to-r from-emerald-600/90 via-emerald-600 to-teal-700/90 shadow-md shadow-emerald-500/25 ring-1 ring-emerald-400/40"
+                    transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                  />
+                  <motion.div
+                    layoutId="active-tab-glow-underline"
+                    className="absolute -bottom-1.5 left-2 right-2 h-[2px] rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.9)]"
+                    transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                  />
+                </>
+              )}
+              <span className="relative z-20 flex items-center space-x-2">
+                <Wrench className={`h-4 w-4 ${activeTab === 'tools_directory' ? 'text-emerald-200' : 'text-slate-400'}`} />
+                <span>AI Tools Directory</span>
+                <span className="inline-flex items-center rounded-full bg-slate-950/80 px-2 py-0.5 text-[11px] font-bold text-slate-300 border border-slate-700/60">
+                  {categories.length} Sectors
+                </span>
               </span>
             </button>
 
@@ -87,19 +104,35 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onOpenAdmin }) => {
             <button
               id="tab-command-center"
               onClick={() => setActiveTab(activeTab === 'command_center' ? 'tools_directory' : 'command_center')}
-              className={`relative flex items-center justify-center rounded-lg p-2 text-xs sm:text-sm font-semibold transition-all duration-200 ${
+              className={`relative z-10 flex items-center justify-center rounded-lg p-2 text-xs sm:text-sm font-semibold transition-colors duration-200 ${
                 activeTab === 'command_center'
-                  ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400/40'
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
+                  ? 'text-white'
+                  : 'text-slate-400 hover:text-slate-200'
               }`}
               title={activeTab === 'command_center' ? 'Close Command Center' : 'Open OmniAI Command Center'}
               aria-label="Open OmniAI Command Center"
             >
-              <Eye
-                className={`h-4 w-4 transition-transform ${
-                  activeTab === 'command_center' ? 'text-cyan-300 scale-110' : 'text-slate-400 hover:text-white'
-                }`}
-              />
+              {activeTab === 'command_center' && (
+                <>
+                  <motion.div
+                    layoutId="active-tab-indicator"
+                    className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-600 via-indigo-600 to-indigo-700 shadow-md shadow-indigo-600/35 ring-1 ring-indigo-400/50"
+                    transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                  />
+                  <motion.div
+                    layoutId="active-tab-glow-underline"
+                    className="absolute -bottom-1.5 left-1 right-1 h-[2px] rounded-full bg-gradient-to-r from-indigo-400 via-cyan-300 to-indigo-400 shadow-[0_0_12px_rgba(99,102,241,0.9)]"
+                    transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                  />
+                </>
+              )}
+              <span className="relative z-20 flex items-center justify-center">
+                <Eye
+                  className={`h-4 w-4 transition-transform duration-300 ${
+                    activeTab === 'command_center' ? 'text-cyan-200 scale-110' : 'text-slate-400 hover:text-white'
+                  }`}
+                />
+              </span>
               <span className="sr-only">Command Center</span>
             </button>
           </div>
